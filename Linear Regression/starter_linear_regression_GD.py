@@ -28,9 +28,7 @@ plt.rcParams['figure.figsize'] = (12.0, 9.0)
 """ 
     Step 1 - collect our data 
 """
-directory = os.path.dirname(__file__)
-path = os.path.join(directory, 'SamsungSpend.xlsx')
-samsung_spend_activities = pd.read_excel(path, sheet_name='MonthlySpend')
+
 
 """
     Step 2 - EDA and prep
@@ -52,81 +50,52 @@ samsung_spend_activities = pd.read_excel(path, sheet_name='MonthlySpend')
 
 """
 
-print('Columns: ', samsung_spend_activities.columns)
 
 
 """
     Delete columns we don't need
 """
-del samsung_spend_activities['FiscalYear']
-del samsung_spend_activities['FiscalMonth']
-del samsung_spend_activities['CustomerKey']
-del samsung_spend_activities['CustomerName']
-del samsung_spend_activities['Industry']
-del samsung_spend_activities['ITorCarrier']
-del samsung_spend_activities['DormantOrActive']
 
 
 """
     Look at the remaining columns
 """
 
-print(samsung_spend_activities.columns)
 
 """
     Fill null values with 0 for TotalSpend and TotalActivities
 """
-samsung_spend_activities['TotalSpend'] = samsung_spend_activities['TotalSpend'].fillna(0.00)
-samsung_spend_activities['TotalActivities'] = samsung_spend_activities['TotalActivities'].fillna(0)
+
 
 """
     Initialize X and Y, plot them
 """
-X = samsung_spend_activities['TotalActivities']
-Y = samsung_spend_activities['TotalSpend']
-scatter = plt.scatter(X, Y)
-#plt.show(scatter)
 
 
 """
     Box plots to look for outliers
 """
-box_activites = sns.boxenplot(x='TotalActivities', data=samsung_spend_activities)
-plt.show(box_activites)
 
-box_spend = sns.boxenplot(x='TotalSpend', data=samsung_spend_activities)
-plt.show(box_spend)
 
 """
     Handle outliers using z-score
 """
-z = np.abs(stats.zscore(samsung_spend_activities))
 
-samsung_spend_activities = samsung_spend_activities[(z < 3.0).all(axis=1)]
 
 """
     Reset X and Y
 """
-X = samsung_spend_activities['TotalActivities']
-Y = samsung_spend_activities['TotalSpend']
 
 
 """
     Box plots to verify there are fewer outliers
 """
-box_activites = sns.boxenplot(x='TotalActivities', data=samsung_spend_activities)
-plt.show(box_activites)
 
-box_spend = sns.boxenplot(x='TotalSpend', data=samsung_spend_activities)
-plt.show(box_spend)
 
 """
     Scatter plot to look for linear relationship
 """
-X = samsung_spend_activities['TotalActivities']
-Y = samsung_spend_activities['TotalSpend']
-scatter = plt.scatter(X, Y)
-plt.show(scatter)
+
 
 """
     Step 3 - Build the model
@@ -147,12 +116,7 @@ plt.show(scatter)
 """
     Initialize components
 """
-m = 0
-b = 0
-learning_rate = 0.0001
-epochs = 1000
-n = len(samsung_spend_activities)
-error = 0
+
 
 """
     Build the model:
@@ -168,30 +132,3 @@ error = 0
     After the model is trained, set the y_predicted_value to the final model, plot it, and show
 
 """
-for i in range(epochs):
-    y_predicted_value = m * X + b
-    derivative_m = (-2/n) * sum(X * (Y - y_predicted_value))
-    derivative_b = (-2/n) * sum(Y - y_predicted_value)
-    m = m - learning_rate * derivative_m
-    b = b - learning_rate * derivative_b
-print('Slope: {0}, \nY-intercept: {1}'.format(m, b))
-
-y_predicted_value = m * X + b
-plt.scatter(X, Y)
-plt.plot([min(X), max(X)], [min(y_predicted_value), max(y_predicted_value)], color='red')
-plt.show()
-
-x_train, x_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state=4)
-
-x_train = np.array(x_train).reshape(677, 1)
-y_train = np.array(y_train).reshape(677, 1)
-
-ols_linear_regression = linear_model.LinearRegression()
-ols_linear_regression.fit(x_train, y_train)
-
-x_test = np.array(x_test).reshape(-1, 1)
-predictions = ols_linear_regression.predict(x_test)
-
-plt.scatter(X, Y)
-plt.plot([min(X), max(X)], [min(predictions), max(predictions)], color='red')
-plt.show()
