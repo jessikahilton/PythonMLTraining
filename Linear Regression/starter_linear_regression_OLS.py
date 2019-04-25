@@ -16,7 +16,7 @@ Linear Regression Basics:
         a line of best fit to predict the dependent variable given a dependent variable value.  In this example, our
         dependent variable is the amount spent, and the independent variable is the total activities. (This is not a 
         very strong linear relationship, but it works well enough to demonstrate a linear regression.)  That's all a 
-        linear regression really is: finding the slope of the line of best fit.
+        linear regression really is: finding the line of best fit.
 
         There are a few ways to optimize a linear regression.  This example uses the ORDINARY LEAST SQUARES approach.
 
