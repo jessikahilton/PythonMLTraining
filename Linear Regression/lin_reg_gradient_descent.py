@@ -18,9 +18,9 @@ plt.rcParams['figure.figsize'] = (12.0, 9.0)
         a line of best fit to predict the dependent variable given a dependent variable value.  In this example, our
         dependent variable is the amount spent, and the independent variable is the total activities. (This is not a 
         very strong linear relationship, but it works well enough to demonstrate a linear regression.)  That's all a 
-        linear regression really is: finding the slope of the line of best fit.
+        linear regression really is: finding the line of best fit.
         
-        There are a few ways to optimize a linear regression.  This example uses GRADIENT DESCENT, which takes partial
+        There are a few ways to adjust the slope and y-intercept.  This example uses GRADIENT DESCENT, which takes partial
         derivatives to find the lowest point of a curve.  That lowest point is where the error is lowest, or where
         the sum of the distance from all points to the line is lowest.
          
@@ -157,7 +157,7 @@ plt.show()
     
     Components of a linear regression: 
         m: slope of the line of best fit
-        b: a constant value
+        b: a constant value - your y-intercept
     
     Components for gradient descent optimization:
         learning_rate: how quickly we want the model to converge. 0.0001 is standard.
@@ -180,9 +180,8 @@ n = float(len(X))
             predicted_value = value on the line of best fit given slope, X values, and constant
             take the partial derivative of the slope using the equation: (-2/n) * sum(X * (Y - predicted_value)) 
             take the partial derivative of the constant using the equation: (-2/n) * sum(Y - predicted_value))
-            adjust slope based on the partial derivative of the slope we just calculated
-            adjust the constant based on the partial derivative of the constant we just calculated
-            adjust the error 
+            adjust slope based on the partial derivative of the slope we just calculated and learning rate
+            adjust the constant based on the partial derivative of the constant we just calculated and learning rate
             
     After the model is trained, set the y_predicted_value to the final model, plot it, and show
     
@@ -202,7 +201,7 @@ plt.show()
 
 
 """
-    Using libraries...
+    Using libraries... This approach is an OLS approach.
 """
 
 x_train, x_test, y_train, y_test = model_selection.train_test_split(X, Y, test_size=0.2, random_state=4)
